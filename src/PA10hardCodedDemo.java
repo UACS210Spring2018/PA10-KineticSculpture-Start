@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
-import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -31,31 +32,46 @@ public class PA10hardCodedDemo extends Application {
         background.setFill(Color.WHITE);
         
         // Sculpture nodes
-        Rectangle input = new Rectangle(10, 10, 30, 30);
+        int width = 30;
+        int height = 40;
+
+        int inputX = 12;
+        int inputY = 12;
+        Rectangle input = new Rectangle(inputX, inputY, width, height);
         input.setStroke(Color.BLACK);
         input.setStrokeWidth(2);
         input.setFill(Color.WHITE);
 
-        Rectangle thing1 = new Rectangle(60,20,30,30);
-        thing1.setStroke(Color.BLUE);
+        int thing1X = 70;
+        int thing1Y = 25;
+        Rectangle thing1 = new Rectangle(thing1X, thing1Y, width, height);
+        thing1.setStroke(Color.BLACK);
         thing1.setStrokeWidth(2);
         thing1.setFill(Color.WHITE);
 
-        Rectangle thing2 = new Rectangle(70,80,30,30);
-        thing2.setStroke(Color.RED);
+        int thing2X = 60;
+        int thing2Y = 200;
+        Rectangle thing2 = new Rectangle(thing2X, thing2Y, width, height);
+        thing2.setStroke(Color.BLACK);
         thing2.setStrokeWidth(2);
         thing2.setFill(Color.WHITE);
 
-        Rectangle sink = new Rectangle(140,100,30,30);
-        sink.setStroke(Color.ORANGE);
+        int sinkX = 200;
+        int sinkY = 150;
+        Rectangle sink = new Rectangle(sinkX, sinkY, width, height);
+        sink.setStroke(Color.BLACK);
         sink.setStrokeWidth(2);
         sink.setFill(Color.WHITE);
 
         // ============== Connections between sculpture nodes
-        input_to_thing1 = new Line(40, 25, 60, 35);
-        input_to_thing2 = new Line(40, 25, 70, 95);
-        thing1_to_sink = new Line(90,35,140,115);
-        thing2_to_sink = new Line(100,95,140,115);
+        input_to_thing1 = new Line(inputX + width, inputY + height / 2, thing1X,
+                thing1Y + height / 2);
+        input_to_thing2 = new Line(inputX + width, inputY + height / 2, thing2X,
+                thing2Y + height / 2);
+        thing1_to_sink = new Line(thing1X + width, thing1Y + height / 2, sinkX,
+                sinkY + height / 2);
+        thing2_to_sink = new Line(thing2X + width, thing2Y + height / 2, sinkX,
+                sinkY + height / 2);
         
  
         // Putting it all together into a group node.
@@ -85,52 +101,48 @@ public class PA10hardCodedDemo extends Application {
     // Method that will cause all of the sculpture nodes to process
     // their inputs and set up path transitions for all of their output edges.
     private void playSculpture() {
-        PauseTransition wait = new PauseTransition(Duration.seconds(1));
-        wait.setOnFinished((ActionEvent e) -> {
+        // ----- Set up a timeline with an event that processes sculpture
+        final Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        final KeyFrame kf = new KeyFrame(Duration.seconds(1.5),
+                (ActionEvent e) -> {
             switch(demo_step) {
             case 0:
                 process0();
                 demo_step++;
-                wait.playFromStart();
                 break;
             case 1:
                 edgeTransition0();
                 demo_step++;
-                wait.playFromStart();
                 break;
             case 2:
                 process1();
                 demo_step++;
-                wait.playFromStart();
                 break;
             case 3:
                 edgeTransition1();
                 demo_step++;
-                wait.playFromStart();
                 break;
             case 4:
                 process2();
                 demo_step++;
-                wait.playFromStart();
                 break;
             case 5:
                 edgeTransition2();
                 demo_step++;
-                wait.playFromStart();
                 break;
             case 6:
                 process3();
                 demo_step++;
-                wait.playFromStart();
                 break;
             default:
                 System.out.println("Nothing more to process");
-                wait.stop();
             }
         });
 
-        // Now that the PauseTransition thread is setup, get it going.
-        wait.play();
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
     }
     
     private List<Circle> input_input;

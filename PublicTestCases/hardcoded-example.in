@@ -1,9 +1,9 @@
 delay: 1
 input: RED, BLUE
-0: input, (10,10)
-1: passthrough, (60,20)
-2: passthrough, (70,80)
-3: sink, (140,100)
+0: input, (12,12)
+1: passthrough, (70,25)
+2: passthrough, (60,200)
+3: sink, (200,150)
 0 -> 1
 0 -> 2
 1 -> 3
