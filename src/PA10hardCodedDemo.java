@@ -87,7 +87,7 @@ public class PA10hardCodedDemo extends Application {
         root.getChildren().add(thing2_to_sink);
         
         // Connect the group into the scene and show the window.
-        primaryStage.setTitle("PA9: Some hardcoded phases");
+        primaryStage.setTitle("PA10: Some hardcoded phases");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         
